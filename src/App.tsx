@@ -222,7 +222,7 @@ function PublicPage({
     () => buildStandings(data.players, data.matches),
     [data],
   );
-  const suggestions = useMemo(() => buildSuggestedMatches(data, 8), [data]);
+  const suggestions = useMemo(() => buildSuggestedMatches(data, 6), [data]);
   const [prefill, setPrefill] = useState<MatchPrefill | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const finalPair = finalPlayers(data);
