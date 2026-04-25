@@ -595,6 +595,14 @@ main {
   border-bottom: 0;
 }
 
+.standing-name {
+  min-width: 0;
+}
+
+.standing-played {
+  color: var(--muted);
+}
+
 .rank {
   display: inline-grid;
   place-items: center;
@@ -714,6 +722,9 @@ main {
 
 .modal-close {
   flex: 0 0 auto;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
 }
 
 .champion-panel span {
@@ -802,16 +813,43 @@ main {
     width: 100%;
   }
 
+  .modal-close.icon-button {
+    width: 42px;
+  }
+
   .modal-card {
     padding: 14px;
   }
 
   .standing-row {
-    grid-template-columns: 34px minmax(0, 1fr) 36px 36px;
-    row-gap: 2px;
+    grid-template-columns: 34px minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "rank name wins losses"
+      "rank played played played";
+    align-items: start;
+    column-gap: 10px;
+    row-gap: 3px;
+    padding: 4px 0;
   }
 
-  .standing-row small {
-    grid-column: 2 / -1;
+  .rank {
+    grid-area: rank;
+  }
+
+  .standing-name {
+    grid-area: name;
+  }
+
+  .standing-wins {
+    grid-area: wins;
+  }
+
+  .standing-losses {
+    grid-area: losses;
+  }
+
+  .standing-played {
+    grid-area: played;
+    align-self: start;
   }
 }

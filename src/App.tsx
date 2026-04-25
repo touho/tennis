@@ -960,10 +960,10 @@ function StandingsCard({ standings }: { standings: Standing[] }) {
           standings.map((standing, index) => (
             <div className="standing-row" key={standing.player.id}>
               <span className="rank">{index + 1}</span>
-              <strong>{standing.player.name}</strong>
-              <span>{standing.wins}V</span>
-              <span>{standing.losses}H</span>
-              <small>{standing.played} peliä</small>
+              <strong className="standing-name">{standing.player.name}</strong>
+              <span className="standing-wins">{standing.wins}V</span>
+              <span className="standing-losses">{standing.losses}H</span>
+              <small className="standing-played">{standing.played} peliä</small>
             </div>
           ))
         )}
