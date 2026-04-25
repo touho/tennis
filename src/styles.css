@@ -1317,23 +1317,7 @@ main {
   width: 100%;
   height: auto;
   border-radius: 4px;
-}
-
-.scoring-content .ohjeet-desktop {
   display: block;
-}
-
-.scoring-content .ohjeet-mobile {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .scoring-content .ohjeet-desktop {
-    display: none;
-  }
-  .scoring-content .ohjeet-mobile {
-    display: block;
-  }
 }
 
 .standing-name-button {

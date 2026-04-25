@@ -248,16 +248,14 @@ function ScoringFooter() {
   return (
     <footer className="scoring-footer">
       <div className="scoring-content">
-        <img 
-          src={ohjeetDesktop} 
-          alt="Tenniksen pisteet ohje" 
-          className="ohjeet-desktop" 
-        />
-        <img 
-          src={ohjeetMobile} 
-          alt="Tenniksen pisteet ohje" 
-          className="ohjeet-mobile" 
-        />
+        <picture>
+          <source media="(max-width: 640px)" srcSet={ohjeetMobile} />
+          <img 
+            src={ohjeetDesktop} 
+            alt="Tenniksen pisteet ohje" 
+            className="ohjeet-img" 
+          />
+        </picture>
       </div>
     </footer>
   );
