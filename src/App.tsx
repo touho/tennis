@@ -182,15 +182,15 @@ function PublicPage({
     <>
       <div className="page-grid">
         <section className="hero-panel">
-          <div className="hero-copy">
-            <span className="eyebrow">
+          <div className="hero-image">
+            <img src={tennisImage} alt="" aria-hidden="true" />
+            <span className="eyebrow hero-status-badge">
               <Flag size={16} /> {statusLabel[data.state.status]}
             </span>
-            <h1>Italia-Open</h1>
-            <p>Vapaasti pelattava lomaturnaus, jossa voitot ratkaisevat.</p>
-          </div>
-          <div className="hero-image" aria-hidden="true">
-            <img src={tennisImage} alt="" />
+            <div className="hero-copy">
+              <h1>Italia-Open</h1>
+              <p>Vapaasti pelattava lomaturnaus, jossa voitot ratkaisevat.</p>
+            </div>
           </div>
         </section>
 
