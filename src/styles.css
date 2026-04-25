@@ -160,7 +160,8 @@ main {
 .page-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(310px, 0.85fr);
-  gap: 20px;
+  column-gap: 20px;
+  row-gap: 38px;
 }
 
 .hero-panel {
@@ -1158,6 +1159,10 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .page-grid {
+    row-gap: 34px;
+  }
+
   .hero-image img {
     object-position: center 38%;
   }
@@ -1178,6 +1183,10 @@ main {
 
   .hero-panel {
     min-height: 0;
+  }
+
+  .page-grid {
+    row-gap: 30px;
   }
 
   .hero-copy {
@@ -1205,6 +1214,10 @@ main {
   .section-header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .section-header .secondary-button {
+    order: -1;
   }
 
   .admin-row,
