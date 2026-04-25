@@ -6,6 +6,7 @@ import {
   Flame,
   Flag,
   Home,
+  Info,
   Pencil,
   Play,
   Plus,
@@ -1131,9 +1132,22 @@ function StandingsCard({
   standings: Standing[];
   onPlayerClick?: (playerId: string) => void;
 }) {
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+
   return (
     <section className="panel standings-panel">
-      <SectionTitle icon={<Trophy size={20} />} title="Sarjataulukko" />
+      <div className="standings-header">
+        <SectionTitle icon={<Trophy size={20} />} title="Sarjataulukko" />
+        <button 
+          type="button" 
+          className="info-button"
+          onClick={() => setIsInfoOpen(true)}
+          aria-label="Sijoitussäännöt"
+        >
+          <Info size={18} />
+        </button>
+      </div>
+
       <div className="standings-list">
         {standings.length === 0 ? (
           <small>Ei pelaajia.</small>
@@ -1155,6 +1169,35 @@ function StandingsCard({
           ))
         )}
       </div>
+
+      <ReportModal
+        open={isInfoOpen}
+        title="Miten sijoitus lasketaan?"
+        onClose={() => setIsInfoOpen(false)}
+      >
+        <div className="ranking-rules">
+          <div className="rule-point">
+            <strong>1. Voittojen määrä</strong>
+            <p>Pelaaja, jolla on eniten voittoja, on kärjessä.</p>
+          </div>
+          <div className="rule-point">
+            <strong>2. Häviöiden määrä</strong>
+            <p>Tasatilanteessa vähemmän häviöitä kerännyt on korkeammalla.</p>
+          </div>
+          <div className="rule-point">
+            <strong>3. Pelatut ottelut</strong>
+            <p>Jos voitot ja häviöt ovat tasan, enemmän otteluita pelannut sijoittuu korkeammalle.</p>
+          </div>
+          <div className="rule-point">
+            <strong>4. Keskinäinen ottelu</strong>
+            <p>Jos kaikki yllä olevat ovat tasan, keskinäisen kohtaamisen voittaja vie voiton.</p>
+          </div>
+          <div className="rule-point">
+            <strong>5. Aakkosjärjestys</strong>
+            <p>Viimeinen ratkaisu on nimen aakkosjärjestys.</p>
+          </div>
+        </div>
+      </ReportModal>
     </section>
   );
 }

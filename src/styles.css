@@ -1405,3 +1405,52 @@ main {
   background: var(--red-soft);
   color: #7f1f1b;
 }
+
+.standings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.standings-header .section-title {
+  margin-bottom: 0;
+}
+
+.info-button {
+  all: unset;
+  color: var(--muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.info-button:hover {
+  background: var(--yellow);
+  color: var(--ink);
+  border-color: var(--line);
+  transform: scale(1.1);
+}
+
+.ranking-rules {
+  display: grid;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.rule-point strong {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--red);
+  margin-bottom: 4px;
+}
+
+.rule-point p {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.4;
+}
