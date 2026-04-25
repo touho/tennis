@@ -32,9 +32,9 @@ body {
   min-height: 100vh;
   color: var(--ink);
   background:
-    linear-gradient(122deg, transparent 0 15%, rgba(0, 140, 69, 0.24) 15% 18%, transparent 18% 47%, rgba(255, 210, 63, 0.32) 47% 51%, transparent 51%),
-    repeating-linear-gradient(135deg, rgba(21, 21, 21, 0.035) 0 9px, transparent 9px 28px),
-    linear-gradient(135deg, #f8e6a5 0%, #f2c653 42%, #e6783e 100%);
+    linear-gradient(118deg, transparent 0 18%, rgba(0, 140, 69, 0.22) 18% 35%, transparent 35% 63%, rgba(255, 210, 63, 0.24) 63% 78%, transparent 78%),
+    linear-gradient(180deg, rgba(255, 242, 168, 0.42) 0%, transparent 44%, rgba(12, 96, 61, 0.32) 100%),
+    linear-gradient(135deg, #f7d163 0%, #df7940 54%, #0e6e49 100%);
   background-attachment: fixed;
 }
 
