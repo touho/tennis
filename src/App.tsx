@@ -194,7 +194,7 @@ function Shell({
           </span>
           <span>
             <strong>Italia-Open</strong>
-            <small>Suvun tenniskruunu Italiassa</small>
+            <small>Tennis, aurinko ja Casa Visette</small>
           </span>
         </a>
         {isAdmin ? (
@@ -248,8 +248,14 @@ function PublicPage({
               <Flag size={16} /> {statusLabel[data.state.status]}
             </span>
             <div className="hero-copy">
+              <div className="hero-kicker" aria-label="Turnauksen tunnelma">
+                <span>Casa Visette</span>
+              </div>
               <h1>Italia-Open</h1>
-              <p>Vapaasti pelattava lomaturnaus, jossa voitot ratkaisevat.</p>
+              <p>
+                Tennisloma Casa Visettessä: nopeat matsit, kova meteli ja
+                voittajalle kruunu.
+              </p>
             </div>
           </div>
         </section>
@@ -275,14 +281,14 @@ function PublicPage({
               <div className="section-header">
                 <SectionTitle
                   icon={<Flame size={20} />}
-                  title="Seuraavat hyvät pelit"
+                  title="Suositellut seuraavat pelit"
                 />
                 <button
                   className="secondary-button"
                   type="button"
                   onClick={() => openReportModal()}
                 >
-                  <ClipboardList size={18} /> Raportoi peli
+                  <ClipboardList size={18} /> Raportoi tulos
                 </button>
               </div>
               <SuggestionGrid
@@ -680,7 +686,7 @@ function SuggestionGrid({
               onReport(suggestion.playerA.id, suggestion.playerB.id)
             }
           >
-            <Check size={17} /> Raportoi
+            <Check size={17} /> Raportoi tulos
           </button>
         </article>
       ))}
@@ -710,13 +716,12 @@ function PlayerNextPanel({
 
   return (
     <section className="panel compact-panel">
-      <SectionTitle icon={<Users size={20} />} title="Etsi pelaajalle vastustaja" />
+      <SectionTitle icon={<Users size={20} />} title="Haastaja-automaatti" />
       <p className="panel-hint">
-        Valitse ensin pelaaja. Alta näkyvät hänelle parhaat seuraavat
-        vastustajaehdotukset.
+        Valitse itsesi ja katso, ketä vastaan sinun kannattaa pelata seuraavaksi.
       </p>
       <label className="picker-label" htmlFor="selected-player">
-        <span>Pelaaja, jolle etsit vastustajaa</span>
+        <span>Kuka astuu kentälle?</span>
         <select
           id="selected-player"
           name="selected-player"
@@ -1043,7 +1048,7 @@ function RecentMatches({ data }: { data: TournamentData }) {
 
   return (
     <section className="panel">
-      <SectionTitle icon={<ClipboardList size={20} />} title="Viimeisimmät" />
+      <SectionTitle icon={<ClipboardList size={20} />} title="Viimeisimmät pelit" />
       <div className="recent-list">
         {recentMatches.length === 0 ? (
           <small>Ei otteluita.</small>
