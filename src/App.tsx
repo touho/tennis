@@ -59,11 +59,16 @@ function App() {
   const [data, setData] = useState<TournamentData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [celebration, setCelebration] = useState<{
+    id: number;
+    text: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const isAdmin = window.location.pathname.startsWith("/admin");
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
   const refreshPendingRef = useRef(false);
+  const celebrationTimerRef = useRef<number | null>(null);
 
   const refresh = useCallback(async () => {
     if (refreshInFlightRef.current) {
@@ -134,6 +139,14 @@ function App() {
     };
   }, [refresh]);
 
+  useEffect(() => {
+    return () => {
+      if (celebrationTimerRef.current) {
+        window.clearTimeout(celebrationTimerRef.current);
+      }
+    };
+  }, []);
+
   const runAction = useCallback(
     async (action: () => Promise<void>, success: string) => {
       setBusy(true);
@@ -144,6 +157,22 @@ function App() {
         await action();
         await refresh();
         setNotice(success);
+        if (success === "Ottelu raportoitu." || success === "Mestari tallennettu.") {
+          if (celebrationTimerRef.current) {
+            window.clearTimeout(celebrationTimerRef.current);
+          }
+          setCelebration({
+            id: Date.now(),
+            text:
+              success === "Mestari tallennettu."
+                ? "Mestari tallennettu"
+                : "Tulos tallennettu",
+          });
+          celebrationTimerRef.current = window.setTimeout(() => {
+            setCelebration(null);
+            celebrationTimerRef.current = null;
+          }, 2600);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Jokin meni pieleen.");
       } finally {
@@ -167,6 +196,9 @@ function App() {
 
   return (
     <Shell isAdmin={isAdmin}>
+      {celebration ? (
+        <VictoryToast key={celebration.id} text={celebration.text} />
+      ) : null}
       {error ? <StatusMessage tone="danger" text={error} /> : null}
       {notice ? <StatusMessage tone="success" text={notice} /> : null}
       {isAdmin ? (
@@ -817,9 +849,15 @@ function MatchReportForm({
   const chosenPlayers = [playerAId, playerBId]
     .map((playerId) => players.find((player) => player.id === playerId))
     .filter((player): player is Player => Boolean(player));
+  const shellClassName = [
+    variant === "plain" ? "report-form-shell" : "panel",
+    stage === "finaali" ? "final-report-panel" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <section className={variant === "plain" ? "report-form-shell" : "panel"}>
+    <section className={shellClassName}>
       {showHeader ? (
         <SectionTitle
           icon={<ClipboardList size={20} />}
@@ -1124,6 +1162,28 @@ function StatusMessage({
   tone: "danger" | "success" | "neutral";
 }) {
   return <div className={`status-message ${tone}`}>{text}</div>;
+}
+
+function VictoryToast({ text }: { text: string }) {
+  return (
+    <div className="victory-toast" role="status" aria-live="polite">
+      <div className="victory-burst" aria-hidden="true">
+        {Array.from({ length: 12 }, (_, index) => (
+          <span key={index} />
+        ))}
+      </div>
+      <div className="victory-toast-card">
+        <span className="victory-icon" aria-hidden="true">
+          <Crown size={22} />
+        </span>
+        <div>
+          <strong>{text}</strong>
+          <small>Voitto kirjattu Casa Visetten tauluun.</small>
+        </div>
+        <Check size={20} aria-hidden="true" />
+      </div>
+    </div>
+  );
 }
 
 export default App;
