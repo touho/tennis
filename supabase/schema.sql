@@ -30,10 +30,107 @@ create table if not exists tournament_state (
   updated_at timestamptz not null default now()
 );
 
+grant usage on schema public to anon, authenticated;
+grant all on all tables in schema public to anon, authenticated;
+grant all on all sequences in schema public to anon, authenticated;
+
+alter default privileges in schema public
+grant all on tables to anon, authenticated;
+
+alter default privileges in schema public
+grant all on sequences to anon, authenticated;
+
+alter table players enable row level security;
+alter table matches enable row level security;
+alter table tournament_state enable row level security;
+
+drop policy if exists "public players access" on players;
+create policy "public players access"
+on players
+for all
+to anon, authenticated
+using (true)
+with check (true);
+
+drop policy if exists "public matches access" on matches;
+create policy "public matches access"
+on matches
+for all
+to anon, authenticated
+using (true)
+with check (true);
+
+drop policy if exists "public tournament state access" on tournament_state;
+create policy "public tournament state access"
+on tournament_state
+for all
+to anon, authenticated
+using (true)
+with check (true);
+
 insert into tournament_state (id, status)
 values (1, 'not_started')
 on conflict (id) do nothing;
 
-alter table players disable row level security;
-alter table matches disable row level security;
-alter table tournament_state disable row level security;
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication
+    where pubname = 'supabase_realtime'
+  ) then
+    create publication supabase_realtime;
+  end if;
+end
+$$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication p
+    join pg_publication_rel pr on pr.prpubid = p.oid
+    join pg_class c on c.oid = pr.prrelid
+    join pg_namespace n on n.oid = c.relnamespace
+    where p.pubname = 'supabase_realtime'
+      and n.nspname = 'public'
+      and c.relname = 'players'
+  ) then
+    alter publication supabase_realtime add table public.players;
+  end if;
+end
+$$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication p
+    join pg_publication_rel pr on pr.prpubid = p.oid
+    join pg_class c on c.oid = pr.prrelid
+    join pg_namespace n on n.oid = c.relnamespace
+    where p.pubname = 'supabase_realtime'
+      and n.nspname = 'public'
+      and c.relname = 'matches'
+  ) then
+    alter publication supabase_realtime add table public.matches;
+  end if;
+end
+$$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication p
+    join pg_publication_rel pr on pr.prpubid = p.oid
+    join pg_class c on c.oid = pr.prrelid
+    join pg_namespace n on n.oid = c.relnamespace
+    where p.pubname = 'supabase_realtime'
+      and n.nspname = 'public'
+      and c.relname = 'tournament_state'
+  ) then
+    alter publication supabase_realtime add table public.tournament_state;
+  end if;
+end
+$$;

@@ -13,6 +13,10 @@ type PlayerPatch = Pick<Player, "name" | "active">;
 export type TournamentRepository = {
   mode: "supabase" | "local";
   loadData: () => Promise<TournamentData>;
+  subscribe: (
+    onChange: () => void,
+    onError?: (message: string) => void,
+  ) => () => void;
   addPlayer: (name: string) => Promise<void>;
   updatePlayer: (id: string, patch: PlayerPatch) => Promise<void>;
   deletePlayer: (id: string) => Promise<void>;
@@ -246,6 +250,17 @@ const createLocalRepository = (): TournamentRepository => ({
 
     writeLocalData(data);
   },
+
+  subscribe(onChange) {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === storageKey) {
+        onChange();
+      }
+    };
+
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  },
 });
 
 const createSupabaseRepository = (
@@ -280,6 +295,39 @@ const createSupabaseRepository = (
       players: (playersResult.data ?? []) as Player[],
       matches: (matchesResult.data ?? []) as MatchReport[],
       state,
+    };
+  },
+
+  subscribe(onChange, onError) {
+    const channel = supabase
+      .channel("tournament-db-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "players" },
+        onChange,
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "matches" },
+        onChange,
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "tournament_state" },
+        onChange,
+      )
+      .subscribe((status) => {
+        if (status === "CHANNEL_ERROR") {
+          onError?.("Supabase-reaaliaikayhteys epäonnistui.");
+        }
+
+        if (status === "TIMED_OUT") {
+          onError?.("Supabase-reaaliaikayhteys aikakatkaistiin.");
+        }
+      });
+
+    return () => {
+      void supabase.removeChannel(channel);
     };
   },
 

@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Check,
   ClipboardList,
@@ -27,7 +27,7 @@ import {
   nextOpponentsForPlayer,
   playerName,
 } from "./lib/tournament";
-import tennisImage from "./assets/tennis.png";
+import tennisImage from "./assets/hero-italia-open.png";
 import type {
   MatchDraft,
   MatchReport,
@@ -62,16 +62,76 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const isAdmin = window.location.pathname.startsWith("/admin");
+  const refreshInFlightRef = useRef<Promise<void> | null>(null);
+  const refreshPendingRef = useRef(false);
 
   const refresh = useCallback(async () => {
-    const nextData = await repository.loadData();
-    setData(nextData);
+    if (refreshInFlightRef.current) {
+      refreshPendingRef.current = true;
+      await refreshInFlightRef.current;
+      return;
+    }
+
+    const nextRefresh = (async () => {
+      const nextData = await repository.loadData();
+      setData(nextData);
+    })();
+
+    refreshInFlightRef.current = nextRefresh;
+
+    try {
+      await nextRefresh;
+    } finally {
+      refreshInFlightRef.current = null;
+
+      if (refreshPendingRef.current) {
+        refreshPendingRef.current = false;
+        void refresh();
+      }
+    }
   }, []);
 
   useEffect(() => {
-    refresh()
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setLoading(false));
+    let active = true;
+
+    const loadInitialData = async () => {
+      try {
+        await refresh();
+        if (active) {
+          setError(null);
+        }
+      } catch (err) {
+        if (active) {
+          setError(err instanceof Error ? err.message : "Jokin meni pieleen.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+
+    const unsubscribe = repository.subscribe(
+      () => {
+        void refresh().catch((err: Error) => {
+          if (active) {
+            setError(err.message);
+          }
+        });
+      },
+      (message) => {
+        if (active) {
+          setError(message);
+        }
+      },
+    );
+
+    void loadInitialData();
+
+    return () => {
+      active = false;
+      unsubscribe();
+    };
   }, [refresh]);
 
   const runAction = useCallback(
