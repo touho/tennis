@@ -1454,3 +1454,13 @@ main {
   color: var(--ink);
   line-height: 1.4;
 }
+
+.section-title-with-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title-with-info .section-title {
+  margin-bottom: 0;
+}

@@ -278,6 +278,7 @@ function PublicPage({
   const suggestions = useMemo(() => buildSuggestedMatches(data, 6), [data]);
   const [prefill, setPrefill] = useState<MatchPrefill | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isSuggestionsInfoOpen, setIsSuggestionsInfoOpen] = useState(false);
   const [viewingPlayerId, setViewingPlayerId] = useState<string | null>(null);
   const finalPair = finalPlayers(data);
   const championName = playerName(data.players, data.state.champion_id);
@@ -341,10 +342,20 @@ function PublicPage({
             <>
               <div className="report-bar">
                 <div className="section-title-banner">
-                  <SectionTitle
-                    icon={<Flame size={20} />}
-                    title="Suositellut seuraavat pelit"
-                  />
+                  <div className="section-title-with-info">
+                    <SectionTitle
+                      icon={<Flame size={20} />}
+                      title="Suositellut seuraavat pelit"
+                    />
+                    <button 
+                      type="button" 
+                      className="info-button"
+                      onClick={() => setIsSuggestionsInfoOpen(true)}
+                      aria-label="Miten pelit valitaan?"
+                    >
+                      <Info size={18} />
+                    </button>
+                  </div>
                 </div>
                 <button
                   className="secondary-button"
@@ -407,6 +418,31 @@ function PublicPage({
             )
           }
         />
+      </ReportModal>
+
+      <ReportModal
+        open={isSuggestionsInfoOpen}
+        title="Miten pelit suositellaan?"
+        onClose={() => setIsSuggestionsInfoOpen(false)}
+      >
+        <div className="ranking-rules">
+          <div className="rule-point">
+            <strong>1. Uudet kohtaamiset</strong>
+            <p>Järjestelmä suosii ensisijaisesti pelaajia, jotka eivät ole vielä pelanneet vastakkain.</p>
+          </div>
+          <div className="rule-point">
+            <strong>2. Tasaväkiset vastustajat</strong>
+            <p>Seuraavaksi haetaan pelaajia, joilla on saman verran voittoja tai jotka ovat lähellä toisiaan sarjataulukossa.</p>
+          </div>
+          <div className="rule-point">
+            <strong>3. Aktiivisuuden tasapainotus</strong>
+            <p>Järjestelmä yrittää ehdottaa pelejä niille, joilla on vähemmän otteluita takana, jotta taulukko pysyy tasaisena.</p>
+          </div>
+          <div className="rule-point">
+            <strong>4. Uusinnat</strong>
+            <p>Jos kaikkia vastaan on jo pelattu, järjestelmä alkaa ehdottaa uusintaotteluita tasaväkisimpien parien välille.</p>
+          </div>
+        </div>
       </ReportModal>
 
       <ReportModal
