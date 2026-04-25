@@ -1294,3 +1294,44 @@ main {
     align-self: start;
   }
 }
+
+.scoring-footer {
+  width: min(1180px, 100%);
+  margin: 40px auto 20px;
+  padding: 2px;
+  border: 3px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--green) 0 33.3%, var(--white) 33.3% 66.6%, var(--red) 66.6%);
+  box-shadow: 8px 8px 0 rgba(21, 21, 21, 0.15);
+}
+
+.scoring-content {
+  background: var(--white);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.scoring-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.scoring-content .ohjeet-desktop {
+  display: block;
+}
+
+.scoring-content .ohjeet-mobile {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .scoring-content .ohjeet-desktop {
+    display: none;
+  }
+  .scoring-content .ohjeet-mobile {
+    display: block;
+  }
+}

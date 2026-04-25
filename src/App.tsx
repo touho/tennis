@@ -28,6 +28,8 @@ import {
   playerName,
 } from "./lib/tournament";
 import tennisImage from "./assets/hero-italia-open.png";
+import ohjeetDesktop from "./assets/ohjeet_desktop.png";
+import ohjeetMobile from "./assets/ohjeet_mobile.png";
 import type {
   MatchDraft,
   MatchReport,
@@ -237,7 +239,27 @@ function Shell({
         ) : null}
       </header>
       <main>{children}</main>
+      <ScoringFooter />
     </div>
+  );
+}
+
+function ScoringFooter() {
+  return (
+    <footer className="scoring-footer">
+      <div className="scoring-content">
+        <img 
+          src={ohjeetDesktop} 
+          alt="Tenniksen pisteet ohje" 
+          className="ohjeet-desktop" 
+        />
+        <img 
+          src={ohjeetMobile} 
+          alt="Tenniksen pisteet ohje" 
+          className="ohjeet-mobile" 
+        />
+      </div>
+    </footer>
   );
 }
 
