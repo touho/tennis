@@ -310,11 +310,13 @@ function PublicPage({
 
           {data.state.status === "group_stage" ? (
             <>
-              <div className="section-header">
-                <SectionTitle
-                  icon={<Flame size={20} />}
-                  title="Suositellut seuraavat pelit"
-                />
+              <div className="report-bar">
+                <div className="section-title-banner">
+                  <SectionTitle
+                    icon={<Flame size={20} />}
+                    title="Suositellut seuraavat pelit"
+                  />
+                </div>
                 <button
                   className="secondary-button"
                   type="button"
@@ -323,12 +325,15 @@ function PublicPage({
                   <ClipboardList size={18} /> Raportoi tulos
                 </button>
               </div>
-              <SuggestionGrid
-                suggestions={suggestions}
-                onReport={(playerAId, playerBId) =>
-                  openReportModal({ playerAId, playerBId })
-                }
-              />
+
+              <div className="suggestions-section">
+                <SuggestionGrid
+                  suggestions={suggestions}
+                  onReport={(playerAId, playerBId) =>
+                    openReportModal({ playerAId, playerBId })
+                  }
+                />
+              </div>
               <PlayerNextPanel data={data} onReport={openReportModal} />
             </>
           ) : null}

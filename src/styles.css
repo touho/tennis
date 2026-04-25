@@ -374,15 +374,29 @@ main {
   color: var(--ink);
 }
 
-.section-header {
+.report-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
 }
 
-.section-header .section-title {
+.suggestions-section {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.section-title-banner {
+  background: var(--panel);
+  padding: 10px 16px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 rgba(21, 21, 21, 0.1);
+  width: fit-content;
+}
+
+.section-title-banner .section-title {
   margin-bottom: 0;
 }
 
@@ -1217,14 +1231,18 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .section-header {
-    align-items: stretch;
+  .report-bar {
     flex-direction: column;
+    align-items: stretch;
     gap: 36px;
   }
 
-  .section-header .secondary-button {
+  .report-bar .secondary-button {
     order: -1;
+  }
+
+  .section-title-banner {
+    width: 100%;
   }
 
   .admin-row,
