@@ -27,9 +27,9 @@ import {
   nextOpponentsForPlayer,
   playerName,
 } from "./lib/tournament";
-import tennisImage from "./assets/hero-italia-open.png";
-import ohjeetDesktop from "./assets/ohjeet_desktop.png";
-import ohjeetMobile from "./assets/ohjeet_mobile.png";
+import tennisImage from "./assets/hero-italia-open.jpg";
+import ohjeetDesktop from "./assets/ohjeet_desktop.jpg";
+import ohjeetMobile from "./assets/ohjeet_mobile.jpg";
 import type {
   MatchDraft,
   MatchReport,
