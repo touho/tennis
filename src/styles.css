@@ -1335,3 +1335,89 @@ main {
     display: block;
   }
 }
+
+.standing-name-button {
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  min-width: 0;
+  text-align: left;
+  border-radius: 4px;
+  transition: transform 0.1s ease;
+}
+
+.standing-name-button:hover .standing-name {
+  color: var(--red);
+  text-decoration: underline;
+}
+
+.standing-name-button:active {
+  transform: scale(0.98);
+}
+
+.player-history-list {
+  display: grid;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.empty-history {
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 4px 4px 0 rgba(21, 21, 21, 0.05);
+}
+
+.history-row.won {
+  border-left: 6px solid var(--green);
+}
+
+.history-row.lost {
+  border-left: 6px solid var(--red);
+}
+
+.history-main {
+  display: grid;
+  gap: 4px;
+}
+
+.history-opponent {
+  font-size: 1.05rem;
+}
+
+.history-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.result-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  border: 2px solid var(--line);
+}
+
+.result-badge.win {
+  background: var(--green);
+  color: var(--white);
+}
+
+.result-badge.loss {
+  background: var(--red-soft);
+  color: #7f1f1b;
+}

@@ -279,6 +279,7 @@ function PublicPage({
   const suggestions = useMemo(() => buildSuggestedMatches(data, 6), [data]);
   const [prefill, setPrefill] = useState<MatchPrefill | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [viewingPlayerId, setViewingPlayerId] = useState<string | null>(null);
   const finalPair = finalPlayers(data);
   const championName = playerName(data.players, data.state.champion_id);
 
@@ -291,6 +292,13 @@ function PublicPage({
     setIsReportModalOpen(false);
     setPrefill(null);
   };
+
+  const viewingPlayer = data.players.find((p) => p.id === viewingPlayerId);
+  const playerMatches = viewingPlayerId
+    ? data.matches.filter(
+        (m) => m.player_a_id === viewingPlayerId || m.player_b_id === viewingPlayerId
+      ).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    : [];
 
   return (
     <>
@@ -372,7 +380,10 @@ function PublicPage({
         </section>
 
         <aside className="side-column">
-          <StandingsCard standings={standings} />
+          <StandingsCard 
+            standings={standings} 
+            onPlayerClick={(id) => setViewingPlayerId(id)} 
+          />
           <RecentMatches data={data} />
         </aside>
       </div>
@@ -397,6 +408,42 @@ function PublicPage({
             )
           }
         />
+      </ReportModal>
+
+      <ReportModal
+        open={Boolean(viewingPlayerId)}
+        title={viewingPlayer ? `${viewingPlayer.name} – Ottelut` : "Otteluhistoria"}
+        onClose={() => setViewingPlayerId(null)}
+      >
+        <div className="player-history-list">
+          {playerMatches.length === 0 ? (
+            <p className="empty-history">Ei vielä pelattuja otteluita.</p>
+          ) : (
+            playerMatches.map((match) => {
+              const opponentId = match.player_a_id === viewingPlayerId ? match.player_b_id : match.player_a_id;
+              const opponentName = playerName(data.players, opponentId);
+              const isWinner = match.winner_id === viewingPlayerId;
+              
+              return (
+                <div key={match.id} className={`history-row ${isWinner ? "won" : "lost"}`}>
+                  <div className="history-main">
+                    <span className="history-opponent">vastaan <strong>{opponentName}</strong></span>
+                    <small className="history-meta">
+                      {match.stage === "finaali" ? "Finaali" : "Alkusarja"} · {formatDate(match.created_at)}
+                    </small>
+                  </div>
+                  <div className="history-result">
+                    {isWinner ? (
+                      <span className="result-badge win">Voitto</span>
+                    ) : (
+                      <span className="result-badge loss">Häviö</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
       </ReportModal>
     </>
   );
@@ -1079,7 +1126,13 @@ function FinalPanel({
   );
 }
 
-function StandingsCard({ standings }: { standings: Standing[] }) {
+function StandingsCard({ 
+  standings, 
+  onPlayerClick 
+}: { 
+  standings: Standing[];
+  onPlayerClick?: (playerId: string) => void;
+}) {
   return (
     <section className="panel standings-panel">
       <SectionTitle icon={<Trophy size={20} />} title="Sarjataulukko" />
@@ -1090,7 +1143,13 @@ function StandingsCard({ standings }: { standings: Standing[] }) {
           standings.map((standing, index) => (
             <div className="standing-row" key={standing.player.id}>
               <span className="rank">{index + 1}</span>
-              <strong className="standing-name">{standing.player.name}</strong>
+              <button 
+                type="button"
+                className="standing-name-button"
+                onClick={() => onPlayerClick?.(standing.player.id)}
+              >
+                <strong className="standing-name">{standing.player.name}</strong>
+              </button>
               <span className="standing-wins">{standing.wins}V</span>
               <span className="standing-losses">{standing.losses}H</span>
               <small className="standing-played">{standing.played} peliä</small>
