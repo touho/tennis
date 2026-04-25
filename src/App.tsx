@@ -27,6 +27,7 @@ import {
   nextOpponentsForPlayer,
   playerName,
 } from "./lib/tournament";
+import tennisImage from "./assets/tennis.png";
 import type {
   MatchDraft,
   MatchReport,
@@ -132,14 +133,16 @@ function Shell({
             <Trophy size={24} />
           </span>
           <span>
-            <strong>Suvun Italia-Open</strong>
+            <strong>Italia-Open</strong>
             <small>Suvun tenniskruunu Italiassa</small>
           </span>
         </a>
-        <a className="nav-link" href={isAdmin ? "/" : "/admin"}>
-          {isAdmin ? <Home size={18} /> : <Settings size={18} />}
-          {isAdmin ? "Tulostaulu" : "Ylläpito"}
-        </a>
+        {isAdmin ? (
+          <a className="nav-link" href="/">
+            <Home size={18} />
+            Tulostaulu
+          </a>
+        ) : null}
       </header>
       <main>{children}</main>
     </div>
@@ -183,13 +186,11 @@ function PublicPage({
             <span className="eyebrow">
               <Flag size={16} /> {statusLabel[data.state.status]}
             </span>
-            <h1>Suvun Italia-Open</h1>
+            <h1>Italia-Open</h1>
             <p>Vapaasti pelattava lomaturnaus, jossa voitot ratkaisevat.</p>
           </div>
-          <div className="court-visual" aria-hidden="true">
-            <span />
-            <span />
-            <span />
+          <div className="hero-image" aria-hidden="true">
+            <img src={tennisImage} alt="" />
           </div>
         </section>
 
@@ -649,21 +650,29 @@ function PlayerNextPanel({
 
   return (
     <section className="panel compact-panel">
-      <SectionTitle icon={<Users size={20} />} title="Omat vastustajat" />
-      <select
-        name="selected-player"
-        value={selectedPlayerId}
-        onChange={(event) => setSelectedPlayerId(event.target.value)}
-      >
-        {players.map((player) => (
-          <option key={player.id} value={player.id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
+      <SectionTitle icon={<Users size={20} />} title="Etsi pelaajalle vastustaja" />
+      <p className="panel-hint">
+        Valitse ensin pelaaja. Alta näkyvät hänelle parhaat seuraavat
+        vastustajaehdotukset.
+      </p>
+      <label className="picker-label" htmlFor="selected-player">
+        <span>Pelaaja, jolle etsit vastustajaa</span>
+        <select
+          id="selected-player"
+          name="selected-player"
+          value={selectedPlayerId}
+          onChange={(event) => setSelectedPlayerId(event.target.value)}
+        >
+          {players.map((player) => (
+            <option key={player.id} value={player.id}>
+              {player.name}
+            </option>
+          ))}
+        </select>
+      </label>
       <div className="opponent-list">
         {nextOpponents.length === 0 ? (
-          <small>Ei ehdotuksia.</small>
+          <small>Ei ehdotuksia valitulle pelaajalle.</small>
         ) : (
           nextOpponents.map(({ opponent, suggestion }) => (
             <button
@@ -740,9 +749,9 @@ function MatchReportForm({
     });
   };
 
-  const chosenPlayers = players.filter(
-    (player) => player.id === playerAId || player.id === playerBId,
-  );
+  const chosenPlayers = [playerAId, playerBId]
+    .map((playerId) => players.find((player) => player.id === playerId))
+    .filter((player): player is Player => Boolean(player));
 
   return (
     <section className={variant === "plain" ? "report-form-shell" : "panel"}>
@@ -802,17 +811,20 @@ function MatchReportForm({
           </div>
         )}
 
-        <div className="winner-buttons" aria-label="Voittaja">
-          {chosenPlayers.map((player) => (
-            <button
-              key={player.id}
-              type="button"
-              className={winnerId === player.id ? "selected" : ""}
-              onClick={() => setWinnerId(player.id)}
-            >
-              <Crown size={17} /> {player.name}
-            </button>
-          ))}
+        <div className="winner-picker">
+          <span>Kumpi voitti?</span>
+          <div className="winner-buttons" aria-label="Voittaja">
+            {chosenPlayers.map((player) => (
+              <button
+                key={player.id}
+                type="button"
+                className={winnerId === player.id ? "selected" : ""}
+                onClick={() => setWinnerId(player.id)}
+              >
+                <Crown size={17} /> {player.name}
+              </button>
+            ))}
+          </div>
         </div>
 
         <button
