@@ -57,6 +57,7 @@ const statusLabel = {
   group_stage: "Alkusarja",
   final: "Finaali",
 };
+const supabasePollIntervalMs = 15000;
 
 function App() {
   const [data, setData] = useState<TournamentData | null>(null);
@@ -139,6 +140,41 @@ function App() {
     return () => {
       active = false;
       unsubscribe();
+    };
+  }, [refresh]);
+
+  useEffect(() => {
+    if (repository.mode !== "supabase") {
+      return;
+    }
+
+    let active = true;
+
+    const pollRefresh = () => {
+      if (document.visibilityState !== "visible") {
+        return;
+      }
+
+      void refresh().catch((err: Error) => {
+        if (active) {
+          setError(`Yhteysvirhe. Uusi yritys käynnissä (${err.message}).`);
+        }
+      });
+    };
+
+    const intervalId = window.setInterval(pollRefresh, supabasePollIntervalMs);
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        pollRefresh();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [refresh]);
 
