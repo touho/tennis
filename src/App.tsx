@@ -857,12 +857,12 @@ function PlayerNextPanel({
 
   return (
     <section className="panel compact-panel">
-      <SectionTitle icon={<Users size={20} />} title="Haastaja-automaatti" />
+      <SectionTitle icon={<Users size={20} />} title="Kuka astuu kentälle?" />
       <p className="panel-hint">
-        Valitse itsesi ja katso, ketä vastaan sinun kannattaa pelata seuraavaksi.
+        Haastaja-automaatti kertoo, ketä vastaan sinun kannattaa pelata seuraavaksi.
       </p>
       <label className="picker-label" htmlFor="selected-player">
-        <span>Kuka astuu kentälle?</span>
+        <span>Valitse pelaaja</span>
         <select
           id="selected-player"
           name="selected-player"
@@ -876,26 +876,29 @@ function PlayerNextPanel({
           ))}
         </select>
       </label>
-      <div className="opponent-list">
-        {nextOpponents.length === 0 ? (
-          <small>Ei ehdotuksia valitulle pelaajalle.</small>
-        ) : (
-          nextOpponents.map(({ opponent, suggestion }) => (
-            <button
-              type="button"
-              key={opponent.id}
-              onClick={() =>
-                onReport({
-                  playerAId: selectedPlayerId,
-                  playerBId: opponent.id,
-                })
-              }
-            >
-              <span>{opponent.name}</span>
-              <small>{suggestion.reason}</small>
-            </button>
-          ))
-        )}
+      <div className="opponent-recommendations">
+        <h3>Suositellut vastustajat</h3>
+        <div className="opponent-list">
+          {nextOpponents.length === 0 ? (
+            <small>Ei ehdotuksia valitulle pelaajalle.</small>
+          ) : (
+            nextOpponents.map(({ opponent, suggestion }) => (
+              <button
+                type="button"
+                key={opponent.id}
+                onClick={() =>
+                  onReport({
+                    playerAId: selectedPlayerId,
+                    playerBId: opponent.id,
+                  })
+                }
+              >
+                <span>{opponent.name}</span>
+                <small>{suggestion.reason}</small>
+              </button>
+            ))
+          )}
+        </div>
       </div>
     </section>
   );

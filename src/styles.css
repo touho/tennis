@@ -351,6 +351,18 @@ main {
   font-weight: 800;
 }
 
+.opponent-recommendations {
+  display: grid;
+  gap: 8px;
+}
+
+.opponent-recommendations h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
 .status-message {
   margin-bottom: 18px;
   padding: 12px 14px;
