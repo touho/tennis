@@ -900,25 +900,116 @@ main {
 
 .recent-row {
   display: grid;
-  gap: 3px;
-  border-bottom: 2px dashed rgba(21, 21, 21, 0.18);
-  padding: 0 0 9px;
-}
-
-.recent-row:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.recent-row span {
-  width: fit-content;
+  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+  align-items: stretch;
+  min-height: 76px;
+  position: relative;
+  overflow: hidden;
   border: 2px solid var(--line);
   border-radius: 8px;
-  background: var(--green);
-  color: var(--white);
-  padding: 3px 8px;
-  font-size: 0.75rem;
+  background:
+    linear-gradient(110deg, rgba(0, 140, 69, 0.15) 0 34%, transparent 34% 66%, rgba(229, 56, 59, 0.14) 66%),
+    var(--white);
+  box-shadow: 3px 3px 0 rgba(21, 21, 21, 0.1);
+}
+
+.recent-player,
+.recent-match-mark {
+  position: relative;
+  z-index: 1;
+}
+
+.recent-player {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.recent-player.right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.recent-player-button {
+  all: unset;
+  max-width: 100%;
+  border-radius: 6px;
+  color: #4d4d4d;
+  cursor: pointer;
+  font-weight: 760;
+  line-height: 1.02;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+  transition:
+    color 140ms ease,
+    transform 140ms ease,
+    text-decoration-color 140ms ease;
+}
+
+.recent-player-button:hover,
+.recent-player-button:focus-visible {
+  color: var(--red);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.recent-player-button:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.recent-player-button:active {
+  transition-duration: 70ms;
+  transform: translate(1px, 1px);
+}
+
+.recent-player small {
+  width: fit-content;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--ink);
+  padding: 2px 7px;
+  font-size: 0.62rem;
   font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 rgba(21, 21, 21, 0.12);
+}
+
+.recent-player.winner .recent-player-button {
+  color: var(--ink);
+  font-weight: 1000;
+}
+
+.recent-match-mark {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+  padding: 8px 0;
+  text-align: center;
+  opacity: 0.72;
+}
+
+.recent-match-mark span {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 1000;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.recent-match-mark strong {
+  display: block;
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 1000;
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -1131,7 +1222,7 @@ main {
   font-weight: 900;
   text-transform: uppercase;
   text-shadow:
-    2px 2px 0 var(--ink),
+    1px 1px 0 var(--ink),
     -1px -1px 0 var(--ink),
     1px -1px 0 var(--ink),
     -1px 1px 0 var(--ink);
@@ -1141,9 +1232,8 @@ main {
   margin: 6px 0 0;
   font-size: clamp(2.2rem, 8vw, 4.4rem);
   line-height: 1;
-  -webkit-text-stroke: 1px var(--ink);
   text-shadow:
-    3px 3px 0 var(--ink),
+    2px 2px 0 var(--ink),
     -1px -1px 0 var(--ink),
     1px -1px 0 var(--ink),
     -1px 1px 0 var(--ink);
@@ -1492,6 +1582,23 @@ main {
   .standing-played {
     grid-area: played;
     align-self: start;
+  }
+
+  .recent-row {
+    grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr);
+    min-height: 72px;
+  }
+
+  .recent-player {
+    padding: 10px 8px;
+  }
+
+  .recent-player-button {
+    font-size: 0.92rem;
+  }
+
+  .recent-match-mark span {
+    font-size: 0.52rem;
   }
 }
 

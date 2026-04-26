@@ -430,7 +430,10 @@ function PublicPage({
             standings={standings} 
             onPlayerClick={(id) => setViewingPlayerId(id)} 
           />
-          <RecentMatches data={data} />
+          <RecentMatches 
+            data={data} 
+            onPlayerClick={(id) => setViewingPlayerId(id)} 
+          />
         </aside>
       </div>
 
@@ -1277,7 +1280,13 @@ function StandingsCard({
   );
 }
 
-function RecentMatches({ data }: { data: TournamentData }) {
+function RecentMatches({
+  data,
+  onPlayerClick,
+}: {
+  data: TournamentData;
+  onPlayerClick?: (playerId: string) => void;
+}) {
   const recentMatches = [...data.matches]
     .sort(
       (a, b) =>
@@ -1293,18 +1302,43 @@ function RecentMatches({ data }: { data: TournamentData }) {
         {recentMatches.length === 0 ? (
           <small>Ei otteluita.</small>
         ) : (
-          recentMatches.map((match) => (
-            <div className="recent-row" key={match.id}>
-              <span>{match.stage === "finaali" ? "Finaali" : "Peli"}</span>
-              <strong>
-                {playerName(data.players, match.winner_id)} voitti
-              </strong>
-              <small>
-                {playerName(data.players, match.player_a_id)} vastaan{" "}
-                {playerName(data.players, match.player_b_id)}
-              </small>
-            </div>
-          ))
+          recentMatches.map((match) => {
+            const playerAName = playerName(data.players, match.player_a_id);
+            const playerBName = playerName(data.players, match.player_b_id);
+            const isPlayerAWinner = match.winner_id === match.player_a_id;
+            const isFinal = match.stage === "finaali";
+
+            return (
+              <div className="recent-row" key={match.id}>
+                <div className={`recent-player ${isPlayerAWinner ? "winner" : ""}`}>
+                  <button
+                    type="button"
+                    className="recent-player-button"
+                    onClick={() => onPlayerClick?.(match.player_a_id)}
+                  >
+                    {playerAName}
+                  </button>
+                  {isPlayerAWinner ? <small>Voitto</small> : null}
+                </div>
+
+                <div className="recent-match-mark" aria-label={isFinal ? "Finaali" : "Ottelu"}>
+                  {isFinal ? <span>Finaali</span> : null}
+                  <strong>vs</strong>
+                </div>
+
+                <div className={`recent-player right ${!isPlayerAWinner ? "winner" : ""}`}>
+                  <button
+                    type="button"
+                    className="recent-player-button"
+                    onClick={() => onPlayerClick?.(match.player_b_id)}
+                  >
+                    {playerBName}
+                  </button>
+                  {!isPlayerAWinner ? <small>Voitto</small> : null}
+                </div>
+              </div>
+            );
+          })
         )}
       </div>
       {finals.length > 0 ? (
