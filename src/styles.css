@@ -49,11 +49,27 @@ button {
   border: 0;
   border-radius: 8px;
   cursor: pointer;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    filter 140ms ease;
 }
 
 button:disabled {
   cursor: not-allowed;
   opacity: 0.55;
+}
+
+:where(button:not(:disabled)):hover {
+  filter: brightness(1.03);
+}
+
+:where(button:not(:disabled)):active {
+  transition-duration: 70ms;
+  transform: translate(2px, 2px);
 }
 
 input,
@@ -152,6 +168,23 @@ a {
   padding: 0 14px;
   border-radius: 8px;
   box-shadow: 4px 4px 0 var(--ink);
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease,
+    filter 140ms ease;
+}
+
+.nav-link:hover {
+  background: #ffe36d;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.nav-link:active {
+  transition-duration: 70ms;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 main {
@@ -469,6 +502,17 @@ main {
   box-shadow: 4px 4px 0 var(--ink);
 }
 
+.suggestion-card button:not(:disabled):hover {
+  background: #f04a4d;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.suggestion-card button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
 .opponent-list {
   display: grid;
   gap: 8px;
@@ -486,6 +530,18 @@ main {
   padding: 8px 12px;
   text-align: left;
   box-shadow: 4px 4px 0 rgba(21, 21, 21, 0.08);
+}
+
+.opponent-list button:not(:disabled):hover {
+  border-color: var(--green);
+  background: var(--green-soft);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgba(21, 21, 21, 0.14);
+}
+
+.opponent-list button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 rgba(21, 21, 21, 0.12);
 }
 
 .report-form {
@@ -553,6 +609,28 @@ main {
   color: var(--white);
 }
 
+.winner-buttons button:not(:disabled):hover {
+  border-color: var(--green);
+  background: var(--green-soft);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgba(21, 21, 21, 0.14);
+}
+
+.winner-buttons button.selected:not(:disabled):hover {
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.winner-buttons button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 rgba(21, 21, 21, 0.12);
+}
+
+.winner-buttons button.selected:not(:disabled):active {
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
 .primary-button,
 .inline-form button {
   border: 2px solid var(--line);
@@ -560,6 +638,19 @@ main {
   color: var(--white);
   padding: 0 16px;
   box-shadow: 4px 4px 0 var(--ink);
+}
+
+.primary-button:not(:disabled):hover,
+.inline-form button:not(:disabled):hover {
+  background: #049d51;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.primary-button:not(:disabled):active,
+.inline-form button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 .secondary-button {
@@ -570,12 +661,35 @@ main {
   box-shadow: 4px 4px 0 var(--ink);
 }
 
+.secondary-button:not(:disabled):hover {
+  background: #ffe36d;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.secondary-button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
 .danger-button {
   border: 2px solid var(--line);
   background: var(--red-soft);
   color: #7f1f1b;
   padding: 0 16px;
   box-shadow: 4px 4px 0 var(--ink);
+}
+
+.danger-button:not(:disabled):hover {
+  background: #ffd1cd;
+  color: #671511;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.danger-button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 .final-button {
@@ -586,6 +700,17 @@ main {
   color: var(--ink);
   padding: 0 16px;
   box-shadow: 4px 4px 0 var(--ink);
+}
+
+.final-button:not(:disabled):hover {
+  background: #ffe36d;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.final-button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 .stat-strip {
@@ -674,9 +799,24 @@ main {
   box-shadow: 3px 3px 0 var(--ink);
 }
 
+.icon-button:not(:disabled):hover {
+  background: #049d51;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.icon-button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
 .danger-icon {
   background: var(--red);
   color: var(--white);
+}
+
+.danger-icon:not(:disabled):hover {
+  background: #f04a4d;
 }
 
 .standings-list,
@@ -883,6 +1023,16 @@ main {
   color: var(--white);
   transform: none;
   box-shadow: 4px 4px 0 var(--ink);
+}
+
+.final-report-panel .winner-buttons button:not(:disabled):hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.final-report-panel .winner-buttons button:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 .final-report-panel .primary-button {
@@ -1349,6 +1499,7 @@ main {
 }
 
 .standing-name-button:active {
+  transition-duration: 70ms;
   transform: scale(0.98);
 }
 
@@ -1446,6 +1597,11 @@ main {
   color: var(--ink);
   border-color: var(--line);
   transform: scale(1.1);
+}
+
+.info-button:active {
+  transition-duration: 70ms;
+  transform: scale(0.96);
 }
 
 .ranking-rules {

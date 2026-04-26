@@ -857,12 +857,12 @@ function PlayerNextPanel({
 
   return (
     <section className="panel compact-panel">
-      <SectionTitle icon={<Users size={20} />} title="Kuka astuu kentälle?" />
+      <SectionTitle icon={<Users size={20} />} title="Haastaja-automaatti" />
       <p className="panel-hint">
-        Haastaja-automaatti kertoo, ketä vastaan sinun kannattaa pelata seuraavaksi.
+        Valitse pelaaja, niin automaatti ehdottaa kolme sopivaa vastustajaa.
       </p>
       <label className="picker-label" htmlFor="selected-player">
-        <span>Valitse pelaaja</span>
+        <span>Kuka astuu kentälle?</span>
         <select
           id="selected-player"
           name="selected-player"
@@ -877,7 +877,7 @@ function PlayerNextPanel({
         </select>
       </label>
       <div className="opponent-recommendations">
-        <h3>Suositellut vastustajat</h3>
+        <h3>Kolme suositeltua vastustajaa</h3>
         <div className="opponent-list">
           {nextOpponents.length === 0 ? (
             <small>Ei ehdotuksia valitulle pelaajalle.</small>
