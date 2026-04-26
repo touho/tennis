@@ -15,7 +15,7 @@ export type TournamentRepository = {
   loadData: () => Promise<TournamentData>;
   subscribe: (
     onChange: () => void,
-    onError?: (message: string) => void,
+    onConnectionStatus?: (message: string | null) => void,
   ) => () => void;
   addPlayer: (name: string) => Promise<void>;
   updatePlayer: (id: string, patch: PlayerPatch) => Promise<void>;
@@ -298,7 +298,7 @@ const createSupabaseRepository = (
     };
   },
 
-  subscribe(onChange, onError) {
+  subscribe(onChange, onConnectionStatus) {
     const channel = supabase
       .channel("tournament-db-changes")
       .on(
@@ -318,11 +318,15 @@ const createSupabaseRepository = (
       )
       .subscribe((status) => {
         if (status === "CHANNEL_ERROR") {
-          onError?.("Supabase-reaaliaikayhteys epäonnistui.");
+          onConnectionStatus?.("Supabase-reaaliaikayhteys epäonnistui.");
         }
 
         if (status === "TIMED_OUT") {
-          onError?.("Supabase-reaaliaikayhteys aikakatkaistiin.");
+          onConnectionStatus?.("Supabase-reaaliaikayhteys aikakatkaistiin.");
+        }
+
+        if (status === "SUBSCRIBED") {
+          onConnectionStatus?.(null);
         }
       });
 
