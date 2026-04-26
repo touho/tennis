@@ -534,7 +534,9 @@ main {
 
 .opponent-list button:not(:disabled):hover {
   border-color: var(--green);
-  background: var(--green-soft);
+  background:
+    linear-gradient(135deg, rgba(0, 140, 69, 0.24) 0 32%, rgba(255, 253, 247, 0.96) 32% 68%, rgba(229, 56, 59, 0.18) 68%),
+    var(--white);
   transform: translate(-1px, -1px);
   box-shadow: 5px 5px 0 rgba(21, 21, 21, 0.14);
 }
