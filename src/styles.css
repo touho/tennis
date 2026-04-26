@@ -694,6 +694,16 @@ main {
   box-shadow: 2px 2px 0 var(--ink);
 }
 
+.admin-reset-button {
+  background: #ffb000;
+  color: #3d2400;
+}
+
+.admin-reset-button:not(:disabled):hover {
+  background: #ffc83d;
+  color: #2b1900;
+}
+
 .final-button {
   width: 100%;
   margin-top: 14px;

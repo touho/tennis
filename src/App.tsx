@@ -519,7 +519,7 @@ function AdminPage({
             <Play size={18} /> Aloita turnaus
           </button>
           <button
-            className="danger-button"
+            className="danger-button admin-reset-button"
             type="button"
             disabled={busy}
             onClick={() => {
