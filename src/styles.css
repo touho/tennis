@@ -715,6 +715,12 @@ main {
   box-shadow: 2px 2px 0 var(--ink);
 }
 
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .stat-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
