@@ -1059,6 +1059,15 @@ main {
   text-align: center;
 }
 
+.champion-panel > svg {
+  color: var(--white);
+  filter:
+    drop-shadow(2px 0 0 var(--ink))
+    drop-shadow(-2px 0 0 var(--ink))
+    drop-shadow(0 2px 0 var(--ink))
+    drop-shadow(0 -2px 0 var(--ink));
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1102,15 +1111,26 @@ main {
 
 .champion-panel span {
   margin-top: 12px;
-  color: #dcf0e3;
+  color: var(--white);
   font-weight: 900;
   text-transform: uppercase;
+  text-shadow:
+    2px 2px 0 var(--ink),
+    -1px -1px 0 var(--ink),
+    1px -1px 0 var(--ink),
+    -1px 1px 0 var(--ink);
 }
 
 .champion-panel h2 {
   margin: 6px 0 0;
   font-size: clamp(2.2rem, 8vw, 4.4rem);
   line-height: 1;
+  -webkit-text-stroke: 1px var(--ink);
+  text-shadow:
+    3px 3px 0 var(--ink),
+    -1px -1px 0 var(--ink),
+    1px -1px 0 var(--ink),
+    -1px 1px 0 var(--ink);
 }
 
 .footer-note {
